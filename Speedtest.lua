@@ -6,7 +6,7 @@
 -- This means that your code may take (TIME_THRESHOLD seconds * #Functions)
 
 local TIME_THRESHOLD = 1
-local TITLE_TEXT = "tick vs os.time"
+local TITLE_TEXT = "Functions to get Seconds since Epoch"
 
 local Functions = {}
 
@@ -28,6 +28,7 @@ Functions["local os.time"] = function()
 	return localos_time()
 end
 
+--[===[ ]===]
 do
 	local tick = tick
 	local TimesArray = setmetatable({}, {__index = table})
@@ -39,7 +40,7 @@ do
 	end
 
 	repeat
-		local Time
+		local Longest_Time = 0
 		for i = 1, NumFunctions do
 			local Data = TimesArray[i]
 			local Function = Data.Function
@@ -47,10 +48,13 @@ do
 
 			local StartTime = tick()
 			Function()
-			Time = tick() - StartTime + OldTime
+			local Time = tick() - StartTime + OldTime
+			if Time > Longest_Time then
+				Longest_Time = Time
+			end
 			Data.Time = Time
 		end
-	until Time > TIME_THRESHOLD
+	until Longest_Time > TIME_THRESHOLD
 
 	local LongestNameLength = 0
 
@@ -59,7 +63,7 @@ do
 	local TextService = game:GetService("TextService")
 
 	for _, Data in next, TimesArray do
-		local NameLength = TextService:GetTextSize((" "):rep(10) .. Data.Name, FONT_SIZE, FONT, Vector2.new(FONT_SIZE * 10, FONT_SIZE + 16)).X
+		local NameLength = TextService:GetTextSize((" "):rep(10) .. Data.Name, FONT_SIZE, FONT, Vector2.new(1e6, 1e6)).X
 		if NameLength > LongestNameLength then
 			LongestNameLength = NameLength
 		end
@@ -162,3 +166,4 @@ do
 	ListLayout.SortOrder = Enum.SortOrder.Name
 	ListLayout.Parent = Backdrop
 end
+--]===]
