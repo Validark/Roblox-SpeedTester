@@ -1,0 +1,21 @@
+site_name: SpeedTest Documentation
+site_url: https://validark.github.io/speed/
+repo_name: Validark/Roblox-SpeedTester
+repo_url: https://github.com/Validark/Roblox-SpeedTester
+
+theme:
+  name: material
+  palette:
+    primary: 'Red'
+    accent: 'Red'
+
+pages:
+  - Home: index.md
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
